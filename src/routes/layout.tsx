@@ -1,38 +1,49 @@
-import { component$, Slot, useStyles$ } from "@builder.io/qwik";
-import { routeLoader$ } from "@builder.io/qwik-city";
-import type { RequestHandler } from "@builder.io/qwik-city";
-
-import Header from "../components/starter/header/header";
-import Footer from "../components/starter/footer/footer";
-
-import styles from "./styles.css?inline";
-
-export const onGet: RequestHandler = async ({ cacheControl }) => {
-  // Control caching for this request for best performance and to reduce hosting costs:
-  // https://qwik.dev/docs/caching/
-  cacheControl({
-    // Always serve a cached response by default, up to a week stale
-    staleWhileRevalidate: 60 * 60 * 24 * 7,
-    // Max once every 5 seconds, revalidate on the server to get a fresh version of this page
-    maxAge: 5,
-  });
-};
-
-export const useServerTimeLoader = routeLoader$(() => {
-  return {
-    date: new Date().toISOString(),
-  };
-});
+import { component$, Slot } from "@builder.io/qwik";
+import { type DocumentHead } from "@builder.io/qwik-city";
 
 export default component$(() => {
-  useStyles$(styles);
   return (
-    <>
-      <Header />
+    <div class="min-h-screen text-white">
+      <header class="fixed top-0 left-0 z-50 h-20 w-full overflow-hidden border-gray-900">
+        <nav class="mask-image-gradient h-[200%] w-full px-12 py-6 backdrop-blur-xs">
+          <ul class="flex justify-end space-x-8">
+            <li>
+              <a href="#about" class="transition-colors hover:text-neutral-400">
+                About
+              </a>
+            </li>
+            <li>
+              <a
+                href="#contact"
+                class="transition-colors hover:text-neutral-400"
+              >
+                Contact
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </header>
+
       <main>
         <Slot />
       </main>
-      <Footer />
-    </>
+
+      <footer class="py-8">
+        <div class="container mx-auto px-6 text-center text-sm text-neutral-400">
+          © {new Date().getFullYear()} Maciej Szczęsny. All rights reserved.
+        </div>
+      </footer>
+    </div>
   );
 });
+
+export const head: DocumentHead = {
+  title: "Maciej Szczęsny - Software Developer",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Personal portfolio of Maciej Szczęsny, a passionate software developer.",
+    },
+  ],
+};
