@@ -1,10 +1,10 @@
 import { component$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 import { routeLoader$ } from '@builder.io/qwik-city';
+import { readFileSync } from 'fs';
+import { readdir } from 'fs/promises';
 import matter from 'gray-matter';
-import { readFileSync } from 'node:fs';
-import { readdir } from 'node:fs/promises';
-import { join } from 'node:path';
+import { join } from 'path';
 import { Section } from '~/components/section';
 
 interface BlogPost {
