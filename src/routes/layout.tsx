@@ -1,5 +1,5 @@
-import { component$, Slot } from "@builder.io/qwik";
-import { type DocumentHead } from "@builder.io/qwik-city";
+import { component$, Slot } from '@builder.io/qwik';
+import { type DocumentHead } from '@builder.io/qwik-city';
 
 export default component$(() => {
   return (
@@ -8,16 +8,18 @@ export default component$(() => {
         <nav class="mask-image-gradient h-[200%] w-full px-12 py-6 backdrop-blur-xs">
           <ul class="flex justify-end space-x-8">
             <li>
-              <a href="#about" class="transition-colors hover:text-neutral-400">
+              <a href="/#about" class="transition-colors hover:text-neutral-400">
                 About
               </a>
             </li>
             <li>
-              <a
-                href="#contact"
-                class="transition-colors hover:text-neutral-400"
-              >
+              <a href="/#contact" class="transition-colors hover:text-neutral-400">
                 Contact
+              </a>
+            </li>
+            <li>
+              <a href="/blog" class="transition-colors hover:text-neutral-400">
+                Blog
               </a>
             </li>
           </ul>
@@ -38,12 +40,11 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = {
-  title: "Maciej Szczęsny - Software Developer",
+  title: 'Maciej Szczęsny - Software Developer',
   meta: [
     {
-      name: "description",
-      content:
-        "Personal portfolio of Maciej Szczęsny, a passionate software developer.",
+      name: 'description',
+      content: 'Personal portfolio of Maciej Szczęsny, a passionate software developer.',
     },
   ],
 };
