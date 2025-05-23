@@ -1,10 +1,6 @@
-import { component$ } from '@builder.io/qwik';
+import { component$, type JSX } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 import { routeLoader$ } from '@builder.io/qwik-city';
-import { readFileSync } from 'fs';
-import { readdir } from 'fs/promises';
-import matter from 'gray-matter';
-import { join } from 'path';
 import { Section } from '~/components/section';
 
 interface BlogPost {
@@ -14,28 +10,30 @@ interface BlogPost {
   date: string;
 }
 
+interface MDXModule {
+  frontmatter: {
+    title: string;
+    description: string;
+    date: string;
+  };
+  default: () => JSX.Element;
+}
+
 export const useBlogPosts = routeLoader$(async () => {
-  const blogDir = join(process.cwd(), 'src/routes/blog');
-  const entries = await readdir(blogDir, { withFileTypes: true });
-  
   const posts: BlogPost[] = [];
   
-  for (const entry of entries) {
-    if (entry.isDirectory() && entry.name !== 'index') {
-      const postPath = join(blogDir, entry.name, 'index.mdx');
-      try {
-        const content = readFileSync(postPath, 'utf-8');
-        const { data } = matter(content);
-        posts.push({
-          slug: entry.name,
-          title: data.title,
-          description: data.description,
-          date: data.date,
-        });
-      } catch (error) {
-        console.error(`Error reading post ${entry.name}:`, error);
-      }
-    }
+  const blogModules = import.meta.glob<MDXModule>('/src/routes/blog/*/index.mdx', { eager: true });
+  
+  for (const [path, module] of Object.entries(blogModules)) {
+    const slug = path.split('/')[4];
+    const { frontmatter } = module;
+    
+    posts.push({
+      slug,
+      title: frontmatter.title,
+      description: frontmatter.description,
+      date: frontmatter.date,
+    });
   }
   
   return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
