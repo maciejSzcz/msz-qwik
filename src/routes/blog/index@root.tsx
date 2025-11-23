@@ -1,47 +1,33 @@
-import { component$, type JSX } from '@builder.io/qwik';
+import { component$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 import { routeLoader$ } from '@builder.io/qwik-city';
 import { Section } from '~/components/section';
+import { MDXModule } from '~/model/MDXModule';
 
-interface BlogPost {
-  slug: string;
-  title: string;
-  description: string;
-  date: string;
-}
-
-interface MDXModule {
-  frontmatter: {
-    title: string;
-    description: string;
-    date: string;
-  };
-  default: () => JSX.Element;
-}
+import type { BlogPost } from '~/utils/blog-posts';
 
 export const useBlogPosts = routeLoader$(async () => {
   const posts: BlogPost[] = [];
-  
+
   const blogModules = import.meta.glob<MDXModule>('/src/routes/blog/*/index.mdx', { eager: true });
-  
   for (const [path, module] of Object.entries(blogModules)) {
     const slug = path.split('/')[4];
-    const { frontmatter } = module;
-    
+    const frontmatter = module.frontmatter || module;
+
     posts.push({
       slug,
-      title: frontmatter.title,
-      description: frontmatter.description,
-      date: frontmatter.date,
+      title: frontmatter.title || module.title || 'Untitled',
+      description: frontmatter.description || module.description || '',
+      date: frontmatter.date || module.date || new Date().toISOString(),
     });
   }
-  
+
   return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 });
 
 export default component$(() => {
   const posts = useBlogPosts();
-  
+
   return (
     <Section>
       <h1 class="mb-8 text-4xl font-bold">Blog</h1>

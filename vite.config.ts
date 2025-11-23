@@ -4,9 +4,12 @@
  */
 import { qwikCity } from "@builder.io/qwik-city/vite";
 import { qwikVite } from "@builder.io/qwik/optimizer";
+import rehypeShiki from '@shikijs/rehype';
 import tailwindcss from "@tailwindcss/vite";
+import remarkGfm from "remark-gfm";
 import { defineConfig, type UserConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
+
 import pkg from "./package.json";
 let platform = {};
 if (process.env.NODE_ENV === "development") {
@@ -24,7 +27,19 @@ errorOnDuplicatesPkgDeps(devDependencies, dependencies);
 export default defineConfig(({ command, mode }): UserConfig => {
   return {
     plugins: [
+
       qwikCity({
+        mdxPlugins: 
+          {
+            remarkGfm: true,
+            rehypeSyntaxHighlight: true,
+            rehypeAutolinkHeadings: true,
+          },
+          mdx: {
+            remarkPlugins: [remarkGfm],
+            rehypePlugins: [[rehypeShiki, {theme: 'tokyo-night'}]],
+            jsxImportSource: '@builder.io/qwik',
+          },
         platform,
       }),
       qwikVite(),

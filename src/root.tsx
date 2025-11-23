@@ -1,4 +1,11 @@
-import { component$, isDev, noSerialize, useSignal, useVisibleTask$, type NoSerialize } from '@builder.io/qwik';
+import {
+  component$,
+  isDev,
+  noSerialize,
+  useSignal,
+  useVisibleTask$,
+  type NoSerialize,
+} from '@builder.io/qwik';
 import { QwikCityProvider, RouterOutlet, ServiceWorkerRegister } from '@builder.io/qwik-city';
 import Lenis from 'lenis';
 import { RouterHead } from './components/router-head/router-head';
@@ -10,11 +17,13 @@ export default component$(() => {
   const lenis = useSignal<NoSerialize<Lenis> | null>(null);
 
   useVisibleTask$(() => {
-    lenis.value = noSerialize(new Lenis({
-      autoRaf: true,
-      anchors: true,
-      duration: 0.5,
-    }));
+    lenis.value = noSerialize(
+      new Lenis({
+        autoRaf: true,
+        anchors: true,
+        duration: 0.5,
+      })
+    );
 
     return () => {
       if (lenis.value) {

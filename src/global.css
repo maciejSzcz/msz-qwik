@@ -1,12 +1,20 @@
 @import 'tailwindcss';
 @plugin "@tailwindcss/typography";
 
+@font-face {
+  font-family: 'Raleway';
+  src: url('/fonts/Raleway-VariableFont_wght.ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
 .mask-image-gradient {
   mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 100%);
 }
 
 body {
   font-family:
+    'Raleway',
     system-ui,
     -apple-system,
     BlinkMacSystemFont,

@@ -62,8 +62,8 @@ export default component$(() => {
       />
       <Section id="home" class="pt-24">
         <div class="z-10">
-          <h1 class="mb-4 text-7xl font-bold tracking-wide">Maciej Szczęsny</h1>
-          <p class="text-2xl text-neutral-400">Software Developer</p>
+          <h1 class="mb-4 text-4xl md:text-7xl font-bold tracking-wide">Maciej Szczęsny</h1>
+          <p class="text-xl md:text-2xl text-neutral-400">Software Developer</p>
         </div>
       </Section>
 
