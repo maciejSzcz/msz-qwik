@@ -12,6 +12,22 @@
   mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 100%);
 }
 
+@keyframes blob-spin {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(45deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.animate-blob-spin {
+  animation: blob-spin 20s infinite reverse;
+}
+
 body {
   font-family:
     'Raleway',

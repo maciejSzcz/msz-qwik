@@ -1,4 +1,4 @@
-import { component$, useVisibleTask$ } from '@builder.io/qwik';
+import { component$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 import {
   SiJavascript,
@@ -8,7 +8,6 @@ import {
   SiRust,
   SiTypescript,
 } from '@qwikest/icons/simpleicons';
-import { animate } from 'motion';
 import { Section } from '~/components/section';
 
 export default component$(() => {
@@ -39,31 +38,16 @@ export default component$(() => {
     },
   ];
 
-  useVisibleTask$(() => {
-    animate(
-      '#animation-target',
-      {
-        scale: [1, 1.2, 1],
-        rotate: [0, 45, 0],
-      },
-      {
-        duration: 20,
-        repeat: Infinity,
-        repeatType: 'reverse',
-      }
-    );
-  });
-
   return (
     <div class="relative overflow-x-hidden">
       <div
         id="animation-target"
-        class="absolute -top-1/4 -right-1/4 h-2/3 w-2/3 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 opacity-10 blur-3xl"
+        class="animate-blob-spin absolute -top-1/4 -right-1/4 h-2/3 w-2/3 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 opacity-10 blur-3xl"
       />
       <Section id="home" class="pt-24">
         <div class="z-10">
-          <h1 class="mb-4 text-4xl md:text-7xl font-bold tracking-wide">Maciej Szczęsny</h1>
-          <p class="text-xl md:text-2xl text-neutral-400">Software Developer</p>
+          <h1 class="mb-4 text-4xl font-bold tracking-wide md:text-7xl">Maciej Szczęsny</h1>
+          <p class="text-xl text-neutral-400 md:text-2xl">Software Developer</p>
         </div>
       </Section>
 
