@@ -17,7 +17,7 @@ export default component$(() => {
 export const head: DocumentHead = ({ head, url }) => {
   const pathname = url.pathname;
 
-  const match = pathname.match(/^\/blog\/([^]+)\/?$/);
+  const match = pathname.match(/^\/blog\/([^/]+)\/?$/);
   const slug = match?.[1];
 
   if (!slug) {
