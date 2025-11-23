@@ -39,17 +39,17 @@ export const onGet: RequestHandler = async ({ params, url, send }) => {
         fonts: [
           {
             name: 'Raleway regular',
-            data: await fetchFont(`${url.origin}/fonts/Raleway-Regular.ttf`).catch(() => null),
+            data: await fetchFont(`${url.origin}/fonts/Raleway-Regular.ttf`),
             weight: 400,
             style: 'normal',
           },
           {
             name: 'Raleway bold',
-            data: await fetchFont(`${url.origin}/fonts/Raleway-Bold.ttf`).catch(() => null),
+            data: await fetchFont(`${url.origin}/fonts/Raleway-Bold.ttf`),
             weight: 700,
             style: 'normal',
           },
-        ].filter((font) => font.data !== null),
+        ],
       }
     )
   );

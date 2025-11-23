@@ -1,4 +1,4 @@
-import { JSX } from '@builder.io/qwik/jsx-runtime';
+import type { JSX } from '@builder.io/qwik/jsx-runtime';
 
 export interface MDXModule {
   frontmatter?: {

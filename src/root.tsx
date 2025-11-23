@@ -16,6 +16,7 @@ import './global.css';
 export default component$(() => {
   const lenis = useSignal<NoSerialize<Lenis> | null>(null);
 
+  // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(() => {
     lenis.value = noSerialize(
       new Lenis({
