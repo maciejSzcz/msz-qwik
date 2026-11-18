@@ -54,11 +54,11 @@ export default component$(() => {
 
       <div class="col-text intro-fade mt-24 space-y-6 text-xl leading-relaxed md:mt-40">
         <p id="about" class="scroll-mt-12">
-          I've been a frontend developer since 2021, working mostly in TypeScript and React. Lately
-          I've been moving further down the stack, into Node and a bit of Rust.
+          I work as a software developer in Warsaw. I've been doing it since 2021, mostly frontend,
+          though lately more and more backend too. And I write a lot of my code with AI agents now.
         </p>
         <p class="text-ink-soft">
-          Away from the keyboard I like cars, motorbikes, jetskis and anything fast with an engine.
+          Outside of work I like cars, motorbikes, jetskis and anything else fast with an engine.
         </p>
         <p id="contact" class="scroll-mt-12">
           The best way to reach me is{' '}
@@ -114,17 +114,16 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = {
-  title: 'Maciej Szczęsny - Software Developer | Full Stack Developer',
+  title: 'Maciej Szczęsny, Senior Frontend Developer',
   meta: [
     {
       name: 'description',
       content:
-        'Maciej Szczęsny - Full Stack Software Developer specializing in JavaScript, TypeScript, React, Node.js, and Rust. View my portfolio and get in touch for collaboration opportunities.',
+        'Maciej Szczęsny, senior frontend developer in Warsaw. Frontend, some backend, and a lot of work with AI agents.',
     },
     {
       name: 'keywords',
-      content:
-        'Maciej Szczęsny, Software Developer, Full Stack Developer, JavaScript, TypeScript, React, Node.js, Rust, Web Development',
+      content: 'Maciej Szczęsny, Senior Frontend Developer, Web Development, AI agents, Warsaw',
     },
     {
       name: 'author',
@@ -136,12 +135,12 @@ export const head: DocumentHead = {
     },
     {
       property: 'og:title',
-      content: 'Maciej Szczęsny - Software Developer | Full Stack Developer',
+      content: 'Maciej Szczęsny, Senior Frontend Developer',
     },
     {
       property: 'og:description',
       content:
-        'Full Stack Software Developer specializing in JavaScript, TypeScript, React, Node.js, and Rust. View my portfolio and get in touch for collaboration opportunities.',
+        'Maciej Szczęsny, senior frontend developer in Warsaw. Frontend, some backend, and a lot of work with AI agents.',
     },
     {
       property: 'og:type',
@@ -157,12 +156,12 @@ export const head: DocumentHead = {
     },
     {
       name: 'twitter:title',
-      content: 'Maciej Szczęsny - Software Developer | Full Stack Developer',
+      content: 'Maciej Szczęsny, Senior Frontend Developer',
     },
     {
       name: 'twitter:description',
       content:
-        'Full Stack Software Developer specializing in JavaScript, TypeScript, React, Node.js, and Rust. View my portfolio and get in touch for collaboration opportunities.',
+        'Maciej Szczęsny, senior frontend developer in Warsaw. Frontend, some backend, and a lot of work with AI agents.',
     },
   ],
   links: [

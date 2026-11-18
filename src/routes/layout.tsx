@@ -110,7 +110,7 @@ export const head: DocumentHead = {
   meta: [
     {
       name: 'description',
-      content: 'Personal portfolio of Maciej Szczęsny, software developer.',
+      content: 'Maciej Szczęsny, senior frontend developer in Warsaw.',
     },
   ],
 };

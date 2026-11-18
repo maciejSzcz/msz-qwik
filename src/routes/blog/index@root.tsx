@@ -59,8 +59,7 @@ export const head: DocumentHead = {
   meta: [
     {
       name: 'description',
-      content:
-        'Read my thoughts on software development, programming tips, and my journey as a developer.',
+      content: 'Posts by Maciej Szczęsny on programming, AI and whatever else I find interesting.',
     },
   ],
 };
