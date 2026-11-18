@@ -2,12 +2,12 @@
   "name": "my-qwik-basic-starter",
   "description": "Demo app with sample routes",
   "engines": {
-    "node": ">=22.14.0",
-    "pnpm": "12.21.0"
+    "node": ">=22.14.0"
   },
   "engines-annotation": "Mostly required by sharp which needs a Node-API v9 compatible runtime",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@10.11.1",
   "scripts": {
     "build": "qwik build",
     "build.client": "vite build",
@@ -63,5 +63,14 @@
   },
   "dependencies": {
     "resend": "^6.5.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "workerd"
+    ],
+    "ignoredBuiltDependencies": [
+      "sharp"
+    ]
   }
 }

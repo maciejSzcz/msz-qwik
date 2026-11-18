@@ -14,7 +14,7 @@ pnpm lint
 pnpm fmt
 ```
 
-Requires Node 22.14+ and pnpm 12.21.0, pinned in `package.json` `engines` (build-script approvals live in `pnpm-workspace.yaml` under `allowBuilds`).
+Requires Node 22.14+ (`.nvmrc`). pnpm is pinned to 10.11.1 via `packageManager` to match the Cloudflare Pages build image; a newer global pnpm switches to it automatically. Build-script approvals are under `pnpm` in `package.json`.
 
 ## Layout
 
@@ -69,4 +69,4 @@ The signup form and its server action exist but are hidden with `SHOW_NEWSLETTER
 
 ## Deploying
 
-`wrangler.jsonc` configures the Pages project (output: `dist/`, `nodejs_compat`). Its `vars` are runtime variables only; build settings such as `PNPM_VERSION` and `NODE_VERSION` are set in the Cloudflare dashboard. Keep secrets out of `wrangler.jsonc`.
+`wrangler.jsonc` configures the Pages project (output: `dist/`, `nodejs_compat`). Its `vars` are runtime variables only; build settings are set in the Cloudflare dashboard. If you change the pnpm version, update `packageManager` and make sure the Pages build uses the same one. Keep secrets out of `wrangler.jsonc`.
