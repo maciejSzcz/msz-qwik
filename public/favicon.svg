@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" fill="black" />
-  <rect x="16" y="16" width="10" height="10" fill="#9D4EDD" />
+  <rect width="32" height="32" rx="7" fill="#101614" />
+  <!-- lowercase "m" from Funnel Display 800 -->
+  <path transform="translate(2.533 23.13) scale(0.02334 -0.02334)" fill="#FAF9F6" d="M110 0V420H20V600H204V500H246Q280 553 331.5 582.0Q383 611 460 611Q533 611 584.5 586.5Q636 562 668 515H672Q743 611 876 611Q995 611 1064.5 542.0Q1134 473 1134 357V0H950V321Q950 447 832 447Q714 447 714 321V0H530V321Q530 447 410 447Q352 447 323.0 416.0Q294 385 294 321V0Z" />
 </svg>

@@ -2,7 +2,8 @@
   "name": "my-qwik-basic-starter",
   "description": "Demo app with sample routes",
   "engines": {
-    "node": ">=22.14.0"
+    "node": ">=22.14.0",
+    "pnpm": "12.21.0"
   },
   "engines-annotation": "Mostly required by sharp which needs a Node-API v9 compatible runtime",
   "private": true,
@@ -30,6 +31,9 @@
     "@builder.io/qwik-city": "^1.17.2",
     "@cloudflare/workers-types": "^4.20251121.0",
     "@eslint/js": "^9.39.1",
+    "@fontsource/funnel-display": "^5.3.0",
+    "@fontsource/funnel-sans": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
     "@qwikest/icons": "^0.0.13",
     "@shikijs/rehype": "^3.15.0",
     "@tailwindcss/typography": "^0.5.19",
@@ -57,10 +61,7 @@
     "vite-tsconfig-paths": "^5.1.4",
     "wrangler": "^4.50.0"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "workerd"
-    ]
+  "dependencies": {
+    "resend": "^6.5.2"
   }
 }

@@ -1,48 +1,154 @@
 @import 'tailwindcss';
-@plugin "@tailwindcss/typography";
+@plugin '@tailwindcss/typography';
 
-@font-face {
-  font-family: 'Raleway';
-  src: url('/fonts/Raleway-VariableFont_wght.ttf') format('truetype-variations');
-  font-weight: 100 900;
-  font-display: swap;
+@theme {
+  --color-paper: #faf9f6;
+  --color-ink: #101614;
+  --color-ink-soft: #4a504c;
+  --color-meta: #6f736f;
+  --color-line: rgb(16 22 20 / 0.12);
+
+  --font-display: 'Funnel Display', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Funnel Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-.mask-image-gradient {
-  mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 100%);
-}
-
-@keyframes blob-spin {
-  0% {
-    transform: scale(1) rotate(0deg);
+@layer base {
+  html {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  50% {
-    transform: scale(1.2) rotate(45deg);
+
+  body {
+    font-family: var(--font-sans);
+    line-height: 1.6;
   }
-  100% {
-    transform: scale(1) rotate(0deg);
+
+  ::selection {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
   }
 }
 
-.animate-blob-spin {
-  animation: blob-spin 20s infinite reverse;
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
 }
 
-body {
-  font-family:
-    'Raleway',
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    sans-serif;
-  color: var(--text-color);
-  line-height: 1.6;
-  background-image: radial-gradient(circle, rgb(42, 29, 51) 2px, transparent 2px);
-  background-size: 20px 20px;
-  background-color: #0f0e0e;
+/* Page frame: one left edge for everything */
+@utility frame {
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+  @media (width >= 48rem) {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* The reading column: a fixed measure, centred in the page on wide screens */
+@utility col-text {
+  max-width: 36rem;
+  @media (width >= 64rem) {
+    margin-inline: auto;
+  }
+}
+
+@utility label {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-meta);
+}
+
+/* unlayered so it wins over the typography plugin's defaults */
+.prose {
+  --tw-prose-body: var(--color-ink);
+  --tw-prose-headings: var(--color-ink);
+  --tw-prose-lead: var(--color-ink-soft);
+  --tw-prose-links: var(--color-ink);
+  --tw-prose-bold: var(--color-ink);
+  --tw-prose-counters: var(--color-meta);
+  --tw-prose-bullets: var(--color-meta);
+  --tw-prose-hr: var(--color-line);
+  --tw-prose-quotes: var(--color-ink);
+  --tw-prose-quote-borders: var(--color-line);
+  --tw-prose-captions: var(--color-meta);
+  --tw-prose-code: var(--color-ink);
+  --tw-prose-th-borders: var(--color-line);
+  --tw-prose-td-borders: var(--color-line);
+}
+
+/* Home intro: letters rise out of each word's baseline and settle from a slight
+   tilt, one after another; the intro text fades in as the headline lands.
+   Plays once per session (see root.tsx and routes/index.tsx). */
+.rise-word {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: top;
+  /* the word is the mask; padding makes room for descenders without changing line height */
+  overflow: clip;
+  overflow-clip-margin: 0.05em;
+  padding-bottom: 0.25em;
+  margin-bottom: -0.25em;
+}
+
+.rise-letter {
+  display: inline-block;
+  transform-origin: 0 100%;
+  animation: rise 1200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--n, 0) * 28ms);
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(135%) rotate(9deg);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.intro-fade {
+  animation: fade-in 800ms cubic-bezier(0.22, 1, 0.36, 1) 1500ms both;
+}
+
+html.intro-done .rise-letter,
+html.intro-done .intro-fade {
+  animation: none;
+}
+
+@keyframes message-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+.message-in {
+  display: inline-block;
+  animation: message-in 200ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise-letter,
+  .intro-fade,
+  .message-in {
+    animation: none;
+  }
 }

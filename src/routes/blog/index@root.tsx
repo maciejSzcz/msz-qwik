@@ -1,7 +1,6 @@
 import { component$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 import { routeLoader$ } from '@builder.io/qwik-city';
-import { Section } from '~/components/section';
 import { MDXModule } from '~/model/MDXModule';
 
 import type { BlogPost } from '~/utils/blog-posts';
@@ -29,28 +28,29 @@ export default component$(() => {
   const posts = useBlogPosts();
 
   return (
-    <Section>
-      <h1 class="mb-8 text-4xl font-bold">Blog</h1>
-      <div class="space-y-8">
+    <div class="frame">
+      <h1 class="display pt-28 text-[clamp(3rem,8.5vw,7.5rem)] md:pt-44">Blog</h1>
+
+      <ul class="col-text mt-24 space-y-14 md:mt-40">
         {posts.value.map((post) => (
-          <article key={post.slug} class="rounded-lg bg-neutral-900/70 p-6">
-            <h2 class="mb-2 text-2xl font-bold">
-              <a href={`/blog/${post.slug}`} class="transition-colors hover:text-purple-400">
+          <li key={post.slug}>
+            <a href={`/blog/${post.slug}`} class="group block">
+              <time class="label" dateTime={post.date}>
+                {new Date(post.date).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </time>
+              <h2 class="font-display mt-2 text-3xl font-extrabold tracking-tight underline-offset-4 group-hover:underline">
                 {post.title}
-              </a>
-            </h2>
-            <p class="mb-4 text-neutral-400">{post.description}</p>
-            <time class="text-sm text-neutral-500">
-              {new Date(post.date).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </time>
-          </article>
+              </h2>
+              {post.description && <p class="text-ink-soft mt-2 text-lg">{post.description}</p>}
+            </a>
+          </li>
         ))}
-      </div>
-    </Section>
+      </ul>
+    </div>
   );
 });
 

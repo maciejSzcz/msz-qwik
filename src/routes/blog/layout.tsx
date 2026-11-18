@@ -1,16 +1,15 @@
 import { component$, Slot } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
-import { Section } from '~/components/section';
 import { getBlogPost } from '~/utils/blog-posts';
 import { generateOgImageUrl } from '~/utils/og-image';
 
 export default component$(() => {
   return (
-    <Section class="pt-24">
-      <article class="prose prose-invert max-w-none rounded-lg bg-neutral-900/50 p-6">
+    <div class="frame pt-28 md:pt-44">
+      <article class="prose prose-lg col-text prose-headings:font-display prose-headings:font-extrabold prose-headings:tracking-tight prose-h1:text-5xl prose-a:underline-offset-4 prose-pre:rounded-md">
         <Slot />
       </article>
-    </Section>
+    </div>
   );
 });
 

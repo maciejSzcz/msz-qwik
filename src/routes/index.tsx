@@ -1,107 +1,114 @@
-import { component$ } from '@builder.io/qwik';
-import type { DocumentHead } from '@builder.io/qwik-city';
-import {
-  SiJavascript,
-  SiNextdotjs,
-  SiNodedotjs,
-  SiReact,
-  SiRust,
-  SiTypescript,
-} from '@qwikest/icons/simpleicons';
-import { Section } from '~/components/section';
+import { component$, useVisibleTask$ } from '@builder.io/qwik';
+import { routeLoader$, type DocumentHead } from '@builder.io/qwik-city';
+import { getAllBlogPosts } from '~/utils/blog-posts';
+
+export const useRecentPosts = routeLoader$(() => getAllBlogPosts().slice(0, 5));
+
+// "I write" stays together so "I" never ends a line on its own
+const headline = ["I'm", 'Maciej.', 'I\u00A0write', 'software,', 'mostly', 'for', 'the', 'web.'];
+
+// index of each word's first letter, so letters stagger across the whole headline
+const letterIndex = headline.map((_, i) =>
+  headline.slice(0, i).reduce((sum, word) => sum + word.length, 0)
+);
+
+const link =
+  'decoration-ink/30 hover:decoration-ink underline underline-offset-4 transition-colors';
 
 export default component$(() => {
-  const skills = [
-    {
-      value: 'JavaScript',
-      icon: SiJavascript,
-    },
-    {
-      value: 'TypeScript',
-      icon: SiTypescript,
-    },
-    {
-      value: 'React',
-      icon: SiReact,
-    },
-    {
-      value: 'Node.js',
-      icon: SiNodedotjs,
-    },
-    {
-      value: 'Next.js',
-      icon: SiNextdotjs,
-    },
-    {
-      value: 'Rust',
-      icon: SiRust,
-    },
-  ];
+  const posts = useRecentPosts();
+
+  // Mark the intro as played once it has finished, so client-side navigation
+  // back home (or a reload) doesn't replay it this session.
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(() => {
+    try {
+      if (sessionStorage.getItem('intro')) return;
+      sessionStorage.setItem('intro', '1');
+    } catch {
+      return;
+    }
+    const timer = setTimeout(() => document.documentElement.classList.add('intro-done'), 3000);
+    return () => clearTimeout(timer);
+  });
 
   return (
-    <div class="relative overflow-x-hidden">
-      <div
-        id="animation-target"
-        class="animate-blob-spin absolute -top-1/4 -right-1/4 h-2/3 w-2/3 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 opacity-10 blur-3xl"
-      />
-      <Section id="home" class="pt-24">
-        <div class="z-10">
-          <h1 class="mb-4 text-4xl font-bold tracking-wide md:text-7xl">Maciej Szczęsny</h1>
-          <p class="text-xl text-neutral-400 md:text-2xl">Software Developer</p>
-        </div>
-      </Section>
+    <div class="frame">
+      <h1
+        aria-label={headline.join(' ')}
+        class="display max-w-[15ch] pt-28 text-[clamp(3rem,8.5vw,7.5rem)] text-balance md:pt-44"
+      >
+        {headline.map((word, wi) => (
+          <span key={word} aria-hidden="true">
+            <span class="rise-word">
+              {[...word].map((ch, ci) => (
+                <span key={ci} class="rise-letter" style={{ '--n': letterIndex[wi] + ci }}>
+                  {ch}
+                </span>
+              ))}
+            </span>
+            {wi < headline.length - 1 && ' '}
+          </span>
+        ))}
+      </h1>
 
-      <Section id="about">
-        <h2 class="mb-6 text-4xl font-bold">About Me</h2>
-        <p class="mb-12 text-lg text-neutral-400">
-          I'm a passionate developer with a passion for challenges. While my primary focus is in web
-          technologies, lately I've been working on a more full stack approach.
+      <div class="col-text intro-fade mt-24 space-y-6 text-xl leading-relaxed md:mt-40">
+        <p id="about" class="scroll-mt-12">
+          I've been a frontend developer since 2021, working mostly in TypeScript and React. Lately
+          I've been moving further down the stack, into Node and a bit of Rust.
         </p>
-        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
-          {skills.map((skill) => (
-            <div
-              key={skill.value}
-              class="flex flex-row items-center rounded-lg bg-neutral-900/70 px-6 py-4"
-            >
-              <skill.icon class="h-6 w-6" />
-              <span class="flex-1 text-center">{skill.value}</span>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      <Section id="contact" class="text-center">
-        <div>
-          <h2 class="mb-4 text-4xl font-bold">Get in Touch</h2>
-          <p class="mb-8 text-neutral-400">
-            Interested in collaborating or just want to say hi? Feel free to reach out!
-          </p>
-          <a
-            href="mailto:mszczesny@macez.dev"
-            class="inline-block rounded-full bg-white px-8 py-3 text-black transition-colors hover:bg-neutral-200"
-          >
-            Say Hello
+        <p class="text-ink-soft">
+          Away from the keyboard I like cars, motorbikes, jetskis and anything fast with an engine.
+        </p>
+        <p id="contact" class="scroll-mt-12">
+          The best way to reach me is{' '}
+          <a href="mailto:mszczesny@macez.dev" class={link}>
+            email
           </a>
-          <div class="mt-12 flex justify-center space-x-6">
-            <a
-              href="https://github.com/maciejSzcz"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-neutral-400 transition-colors hover:text-white"
-            >
-              GitHub
-            </a>
-            <a
-              href="https://www.linkedin.com/in/maciej-szcz%C4%99sny-a14b55134/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-neutral-400 transition-colors hover:text-white"
-            >
-              LinkedIn
-            </a>
-          </div>
-        </div>
-      </Section>
+          . I'm also on{' '}
+          <a
+            href="https://github.com/maciejSzcz"
+            target="_blank"
+            rel="noopener noreferrer"
+            class={link}
+          >
+            GitHub
+          </a>{' '}
+          and{' '}
+          <a
+            href="https://www.linkedin.com/in/maciej-szcz%C4%99sny-a14b55134/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class={link}
+          >
+            LinkedIn
+          </a>
+          .
+        </p>
+      </div>
+
+      {posts.value.length > 0 && (
+        <section class="col-text mt-32 md:mt-48">
+          <h2 class="label mb-8">Writing</h2>
+          <ul class="space-y-6">
+            {posts.value.map((post) => (
+              <li key={post.slug}>
+                <a href={`/blog/${post.slug}`} class="group block">
+                  <span class="text-xl font-medium underline-offset-4 group-hover:underline">
+                    {post.title}
+                  </span>
+                  <time class="text-meta ml-3 tabular-nums" dateTime={post.date}>
+                    {new Date(post.date).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                    })}
+                  </time>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 });

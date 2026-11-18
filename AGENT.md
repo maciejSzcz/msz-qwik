@@ -10,7 +10,6 @@
 
 ## Package Manager
 - **MUST** use `pnpm` for all dependency management (never npm/yarn)
-- See .cursor/rules/package-manager.md for details
 
 ## Code Style
 - **Imports**: Use `type` imports for types (`import type { DocumentHead }`)

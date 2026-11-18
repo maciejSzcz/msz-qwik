@@ -15,21 +15,24 @@ export const onGet: RequestHandler = async ({ params, url, send }) => {
       html`
         <div
           tw="w-full h-full flex flex-col justify-between p-16"
-          style="background-image: radial-gradient(circle, rgb(42, 29, 51) 2px, transparent 2px); background-size: 20px 20px; background-color: #0f0e0e;"
+          style="background-color: #faf9f6; color: #101614; font-family: 'Funnel Sans', 'Funnel Sans Ext'"
         >
-          <div tw="flex flex-col pt-12">
-            <div tw="text-8xl font-bold text-white mb-4" style="font-family: 'Raleway bold'">
-              ${post.title}
-            </div>
-            <div tw="text-2xl text-slate-300 leading-relaxed">${post.description}</div>
+          <div
+            tw="flex justify-between text-xl"
+            style="font-family: 'JetBrains Mono', 'JetBrains Mono Ext'; color: #6f736f"
+          >
+            <div>MACIEJ SZCZĘSNY</div>
+            <div>BLOG · ${post.date}</div>
           </div>
 
-          <div tw="flex justify-between items-end">
-            <div tw="flex flex-col">
-              <div tw="text-2xl text-slate-400 mb-2">Maciej Szczęsny</div>
-              <div tw="text-xl text-slate-500">Blog</div>
+          <div tw="flex flex-col">
+            <div
+              tw="text-8xl mb-6"
+              style="font-family: 'Funnel Display', 'Funnel Display Ext'; letter-spacing: -0.03em; line-height: 1"
+            >
+              ${post.title}
             </div>
-            <div tw="text-lg text-slate-400">${post.date}</div>
+            <div tw="text-3xl" style="color: #4a504c">${post.description}</div>
           </div>
         </div>
       `,
@@ -38,15 +41,39 @@ export const onGet: RequestHandler = async ({ params, url, send }) => {
         height: 630,
         fonts: [
           {
-            name: 'Raleway regular',
-            data: await fetchFont(`${url.origin}/fonts/Raleway-Regular.ttf`),
+            name: 'Funnel Display',
+            data: await fetchFont(`${url.origin}/fonts/funnel-display-latin-800-normal.woff`),
+            weight: 800,
+            style: 'normal',
+          },
+          {
+            name: 'Funnel Display Ext',
+            data: await fetchFont(`${url.origin}/fonts/funnel-display-latin-ext-800-normal.woff`),
+            weight: 800,
+            style: 'normal',
+          },
+          {
+            name: 'Funnel Sans',
+            data: await fetchFont(`${url.origin}/fonts/funnel-sans-latin-400-normal.woff`),
             weight: 400,
             style: 'normal',
           },
           {
-            name: 'Raleway bold',
-            data: await fetchFont(`${url.origin}/fonts/Raleway-Bold.ttf`),
-            weight: 700,
+            name: 'Funnel Sans Ext',
+            data: await fetchFont(`${url.origin}/fonts/funnel-sans-latin-ext-400-normal.woff`),
+            weight: 400,
+            style: 'normal',
+          },
+          {
+            name: 'JetBrains Mono',
+            data: await fetchFont(`${url.origin}/fonts/jetbrains-mono-latin-500-normal.woff`),
+            weight: 500,
+            style: 'normal',
+          },
+          {
+            name: 'JetBrains Mono Ext',
+            data: await fetchFont(`${url.origin}/fonts/jetbrains-mono-latin-ext-500-normal.woff`),
+            weight: 500,
             style: 'normal',
           },
         ],

@@ -1,112 +1,72 @@
-# Qwik City App ⚡️
+# macez.dev
 
-- [Qwik Docs](https://qwik.dev/)
-- [Discord](https://qwik.dev/chat)
-- [Qwik GitHub](https://github.com/QwikDev/qwik)
-- [@QwikDev](https://twitter.com/QwikDev)
-- [Vite](https://vitejs.dev/)
+Personal site and blog of Maciej Szczęsny. Built with Qwik City, styled with Tailwind CSS v4, deployed to Cloudflare Pages.
 
+## Commands
+
+```sh
+pnpm install
+pnpm dev            # dev server with SSR, http://localhost:5173
+pnpm build          # production build into dist/ (also runs typecheck and lint)
+pnpm preview        # build, then serve dist/ with wrangler locally
+pnpm deploy         # build, then upload dist/ with wrangler pages deploy
+pnpm lint
+pnpm fmt
+```
+
+Requires Node 22.14+ and pnpm 12.21.0, pinned in `package.json` `engines` (build-script approvals live in `pnpm-workspace.yaml` under `allowBuilds`).
+
+## Layout
+
+```
+src/
+  routes/
+    index.tsx                 home
+    layout.tsx                header, footer, newsletter action
+    blog/index@root.tsx       post list
+    blog/layout.tsx           post page wrapper and per-post meta/OG tags
+    blog/<slug>/index.mdx     posts
+    og-image/[slug]/index.ts  generated social image per post
+  components/newsletter/      signup form (currently hidden)
+  utils/blog-posts.ts         reads post frontmatter
+  global.css                  design tokens, utilities, intro animation
+public/fonts/                 .woff copies used only by the OG image renderer
+```
+
+## Writing a post
+
+Create `src/routes/blog/<slug>/index.mdx`:
+
+```mdx
+---
+title: Post title
+description: One line shown in lists and social previews
+date: 2026-01-31
 ---
 
-## Project Structure
+# Post title
 
-This project is using Qwik with [QwikCity](https://qwik.dev/qwikcity/overview/). QwikCity is just an extra set of tools on top of Qwik to make it easier to build a full site, including directory-based routing, layouts, and more.
-
-Inside your project, you'll see the following directory structure:
-
-```
-├── public/
-│   └── ...
-└── src/
-    ├── components/
-    │   └── ...
-    └── routes/
-        └── ...
+Body in Markdown/MDX.
 ```
 
-- `src/routes`: Provides the directory-based routing, which can include a hierarchy of `layout.tsx` layout files, and an `index.tsx` file as the page. Additionally, `index.ts` files are endpoints. Please see the [routing docs](https://qwik.dev/qwikcity/routing/overview/) for more info.
+It appears on the home page and `/blog` automatically, and gets an OG image at `/og-image/<slug>`. Code blocks are highlighted by Shiki (theme set in `vite.config.ts`).
 
-- `src/components`: Recommended directory for components.
+## Design
 
-- `public`: Any static assets, like images, can be placed in the public directory. Please see the [Vite public directory](https://vitejs.dev/guide/assets.html#the-public-directory) for more info.
+Defined in `src/global.css`; reuse these instead of hardcoding values.
 
-## Add Integrations and deployment
+- **Colours:** `paper` (#faf9f6) background, `ink` (#101614) text, `ink-soft` and `meta` for secondary text, `line` for the rare hairline.
+- **Type:** Funnel Display 800 for headings (`display` utility), Funnel Sans for body, JetBrains Mono for small labels (`label` utility). Fonts are self-hosted via `@fontsource`, and the two above-the-fold files are preloaded in `src/root.tsx`.
+- **Layout:** `frame` sets the page width and gutters; `col-text` is the 36rem reading column, centred on wide screens. Spacing separates sections; avoid adding borders.
+- **Motion:** the home headline rises letter by letter once per session (`.rise-letter`), and is skipped under `prefers-reduced-motion`.
 
-Use the `pnpm qwik add` command to add additional integrations. Some examples of integrations includes: Cloudflare, Netlify or Express Server, and the [Static Site Generator (SSG)](https://qwik.dev/qwikcity/guides/static-site-generation/).
+## Newsletter
 
-```shell
-pnpm qwik add # or `pnpm qwik add`
-```
+The signup form and its server action exist but are hidden with `SHOW_NEWSLETTER = false` in `src/routes/layout.tsx`. Before turning it on:
 
-## Development
+- set `RESEND_API_KEY` and `RESEND_AUDIENCE_ID` as secrets on the Pages project (locally: `.env` for `pnpm dev`, `.dev.vars` for `pnpm preview`)
+- make sure the sender domain in the action is verified in Resend
 
-Development mode uses [Vite's development server](https://vitejs.dev/). The `dev` command will server-side render (SSR) the output during development.
+## Deploying
 
-```shell
-npm start # or `pnpm start`
-```
-
-> Note: during dev mode, Vite may request a significant number of `.js` files. This does not represent a Qwik production build.
-
-## Preview
-
-The preview command will create a production build of the client modules, a production build of `src/entry.preview.tsx`, and run a local server. The preview server is only for convenience to preview a production build locally and should not be used as a production server.
-
-```shell
-pnpm preview # or `pnpm preview`
-```
-
-## Production
-
-The production build will generate client and server modules by running both client and server build commands. The build command will use Typescript to run a type check on the source code.
-
-```shell
-pnpm build # or `pnpm build`
-```
-
-## Cloudflare Pages
-
-Cloudflare's [wrangler](https://github.com/cloudflare/wrangler) CLI can be used to preview a production build locally. To start a local server, run:
-
-```
-pnpm serve
-```
-
-Then visit [http://localhost:8787/](http://localhost:8787/)
-
-### Deployments
-
-[Cloudflare Pages](https://pages.cloudflare.com/) are deployable through their [Git provider integrations](https://developers.cloudflare.com/pages/platform/git-integration/).
-
-If you don't already have an account, then [create a Cloudflare account here](https://dash.cloudflare.com/sign-up/pages). Next go to your dashboard and follow the [Cloudflare Pages deployment guide](https://developers.cloudflare.com/pages/framework-guides/deploy-anything/).
-
-Within the projects "Settings" for "Build and deployments", the "Build command" should be `pnpm build`, and the "Build output directory" should be set to `dist`.
-
-### Function Invocation Routes
-
-Cloudflare Page's [function-invocation-routes config](https://developers.cloudflare.com/pages/platform/functions/routing/#functions-invocation-routes) can be used to include, or exclude, certain paths to be used by the worker functions. Having a `_routes.json` file gives developers more granular control over when your Function is invoked.
-This is useful to determine if a page response should be Server-Side Rendered (SSR) or if the response should use a static-site generated (SSG) `index.html` file.
-
-By default, the Cloudflare pages adaptor _does not_ include a `public/_routes.json` config, but rather it is auto-generated from the build by the Cloudflare adaptor. An example of an auto-generate `dist/_routes.json` would be:
-
-```
-{
-  "include": [
-    "/*"
-  ],
-  "exclude": [
-    "/_headers",
-    "/_redirects",
-    "/build/*",
-    "/favicon.ico",
-    "/manifest.json",
-    "/service-worker.js",
-    "/about"
-  ],
-  "version": 1
-}
-```
-
-In the above example, it's saying _all_ pages should be SSR'd. However, the root static files such as `/favicon.ico` and any static assets in `/build/*` should be excluded from the Functions, and instead treated as a static file.
-
-In most cases the generated `dist/_routes.json` file is ideal. However, if you need more granular control over each path, you can instead provide you're own `public/_routes.json` file. When the project provides its own `public/_routes.json` file, then the Cloudflare adaptor will not auto-generate the routes config and instead use the committed one within the `public` directory.
+`wrangler.jsonc` configures the Pages project (output: `dist/`, `nodejs_compat`). Its `vars` are runtime variables only; build settings such as `PNPM_VERSION` and `NODE_VERSION` are set in the Cloudflare dashboard. Keep secrets out of `wrangler.jsonc`.
