@@ -1,13 +1,5 @@
-import {
-  component$,
-  isDev,
-  noSerialize,
-  useSignal,
-  useVisibleTask$,
-  type NoSerialize,
-} from '@builder.io/qwik';
+import { component$, isDev } from '@builder.io/qwik';
 import { QwikCityProvider, RouterOutlet, ServiceWorkerRegister } from '@builder.io/qwik-city';
-import Lenis from 'lenis';
 import { RouterHead } from './components/router-head/router-head';
 
 import funnelDisplayUrl from '@fontsource/funnel-display/files/funnel-display-latin-800-normal.woff2?url';
@@ -16,30 +8,9 @@ import '@fontsource/funnel-display/800.css';
 import '@fontsource/funnel-sans/400.css';
 import '@fontsource/funnel-sans/500.css';
 import '@fontsource/jetbrains-mono/500.css';
-import 'lenis/dist/lenis.css';
 import './global.css';
 
 export default component$(() => {
-  const lenis = useSignal<NoSerialize<Lenis> | null>(null);
-
-  // eslint-disable-next-line qwik/no-use-visible-task
-  useVisibleTask$(() => {
-    lenis.value = noSerialize(
-      new Lenis({
-        autoRaf: true,
-        anchors: true,
-        duration: 0.5,
-      })
-    );
-
-    return () => {
-      if (lenis.value) {
-        lenis.value.destroy();
-        lenis.value = null;
-      }
-    };
-  });
-
   return (
     <QwikCityProvider>
       <head>

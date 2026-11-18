@@ -42,7 +42,9 @@ export default defineConfig(({ command, mode }): UserConfig => {
           },
         platform,
       }),
-      qwikVite(),
+      // root.tsx preloads the two above-the-fold fonts itself; without this Qwik
+      // preloads every font file in the bundle (all subsets, woff and woff2).
+      qwikVite({ disableFontPreload: true }),
       tsconfigPaths(),
       tailwindcss(),
     ],

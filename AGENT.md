@@ -21,5 +21,5 @@
 
 ## TypeScript
 - Strict type checking enabled
-- Use `NoSerialize<T>` for client-side objects like Lenis
+- Use `NoSerialize<T>` for client-side objects that can't be serialized
 - Import types separately with `import type`

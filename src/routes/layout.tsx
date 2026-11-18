@@ -2,6 +2,7 @@ import { component$, Slot } from '@builder.io/qwik';
 import { type DocumentHead, routeAction$, useLocation, z, zod$ } from '@builder.io/qwik-city';
 import { Resend } from 'resend';
 import { Newsletter } from '../components/newsletter/newsletter';
+import { SITE_NAME } from '~/utils/site';
 
 export const useNewsletterSignup = routeAction$(
   async (data, { env, fail }) => {
@@ -67,7 +68,7 @@ export default component$(() => {
     path === '/blog'
       ? { href: '/', label: 'Home' }
       : path.startsWith('/blog/')
-        ? { href: '/blog', label: 'Blog' }
+        ? { href: '/blog/', label: 'Blog' }
         : null;
 
   return (
@@ -80,7 +81,7 @@ export default component$(() => {
         ) : (
           <>
             <span />
-            <a href="/blog" class="text-ink-soft hover:text-ink transition-colors">
+            <a href="/blog/" class="text-ink-soft hover:text-ink transition-colors">
               Blog
             </a>
           </>
@@ -105,12 +106,16 @@ export default component$(() => {
   );
 });
 
-export const head: DocumentHead = {
-  title: 'Maciej Szczęsny - Software Developer',
-  meta: [
+// Pages set their own title and description; this only fills a missing title
+// and adds the feed link. A static object here would override every page.
+export const head: DocumentHead = ({ head }) => ({
+  title: head.title || SITE_NAME,
+  links: [
     {
-      name: 'description',
-      content: 'Maciej Szczęsny, senior frontend developer in Warsaw.',
+      rel: 'alternate',
+      type: 'application/rss+xml',
+      title: `${SITE_NAME}, blog`,
+      href: '/blog/rss.xml',
     },
   ],
-};
+});

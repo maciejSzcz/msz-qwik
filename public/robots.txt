@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-User-agent: Googlebot-Image
-Allow: /media/
+Sitemap: https://macez.dev/sitemap.xml

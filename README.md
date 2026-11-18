@@ -7,9 +7,10 @@ Personal site and blog of Maciej Szczęsny. Built with Qwik City, styled with Ta
 ```sh
 pnpm install
 pnpm dev            # dev server with SSR, http://localhost:5173
-pnpm build          # production build into dist/ (also runs typecheck and lint)
+pnpm build          # pre-rendered build into dist/; build.client renders share images first (also typecheck and lint)
 pnpm preview        # build, then serve dist/ with wrangler locally
 pnpm deploy         # build, then upload dist/ with wrangler pages deploy
+pnpm og             # regenerate the share images in public/og/ only
 pnpm lint
 pnpm fmt
 ```
@@ -24,13 +25,14 @@ src/
     index.tsx                 home
     layout.tsx                header, footer, newsletter action
     blog/index@root.tsx       post list
-    blog/layout.tsx           post page wrapper and per-post meta/OG tags
+    blog/layout.tsx           post page wrapper, per-post meta tags and BlogPosting JSON-LD
     blog/<slug>/index.mdx     posts
-    og-image/[slug]/index.ts  generated social image per post
+    blog/rss.xml/index.ts     RSS feed
   components/newsletter/      signup form (currently hidden)
   utils/blog-posts.ts         reads post frontmatter
+  utils/site.ts               site URL, name, share image URLs, JSON-LD helper
   global.css                  design tokens, utilities, intro animation
-public/fonts/                 .woff copies used only by the OG image renderer
+scripts/og.mjs                renders share images into public/og/ (gitignored) at build time
 ```
 
 ## Writing a post
@@ -49,7 +51,7 @@ date: 2026-01-31
 Body in Markdown/MDX.
 ```
 
-It appears on the home page and `/blog` automatically, and gets an OG image at `/og-image/<slug>`. Code blocks are highlighted by Shiki (theme set in `vite.config.ts`).
+It appears on the home page, `/blog`, the RSS feed and the sitemap automatically, and gets a share image at `/og/<slug>.png` on the next build. Code blocks are highlighted by Shiki (theme set in `vite.config.ts`).
 
 ## Design
 
@@ -60,10 +62,18 @@ Defined in `src/global.css`; reuse these instead of hardcoding values.
 - **Layout:** `frame` sets the page width and gutters; `col-text` is the 36rem reading column, centred on wide screens. Spacing separates sections; avoid adding borders.
 - **Motion:** the home headline rises letter by letter once per session (`.rise-letter`), and is skipped under `prefers-reduced-motion`.
 
+## SEO
+
+- Every page is pre-rendered at build time (`ssg` in `adapters/cloudflare-pages/vite.config.ts`), which also writes `sitemap.xml`. Change the `origin` there if the domain changes, along with `SITE_URL` in `src/utils/site.ts`.
+- Each page sets its own `title` and description in its `head`. The root layout's `head` only fills a missing title and adds the RSS link; keep it that way, or it overrides every page.
+- Share images are rendered in Node by `scripts/og.mjs`, not in the Worker: the renderer compiles WebAssembly at runtime, which Cloudflare Workers don't allow.
+- Structured data: `WebSite`, `ProfilePage` and `Person` on the home page, `Blog` on `/blog/`, and `BlogPosting` on posts.
+
 ## Newsletter
 
 The signup form and its server action exist but are hidden with `SHOW_NEWSLETTER = false` in `src/routes/layout.tsx`. Before turning it on:
 
+- pages are pre-rendered, so form posts to them won't reach the action; move the signup to a non-pre-rendered endpoint or exclude that page from `ssg`
 - set `RESEND_API_KEY` and `RESEND_AUDIENCE_ID` as secrets on the Pages project (locally: `.env` for `pnpm dev`, `.dev.vars` for `pnpm preview`)
 - make sure the sender domain in the action is verified in Resend
 

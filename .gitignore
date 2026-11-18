@@ -47,3 +47,6 @@ functions/**/*.js
 # wrangler files
 .wrangler
 .dev.vars*
+
+# Generated at build time by scripts/og.mjs
+/public/og

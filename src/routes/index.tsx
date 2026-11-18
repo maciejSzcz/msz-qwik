@@ -1,6 +1,7 @@
 import { component$, useVisibleTask$ } from '@builder.io/qwik';
 import { routeLoader$, type DocumentHead } from '@builder.io/qwik-city';
 import { getAllBlogPosts } from '~/utils/blog-posts';
+import { DEFAULT_OG_IMAGE, jsonLd, SITE_NAME, SITE_URL } from '~/utils/site';
 
 export const useRecentPosts = routeLoader$(() => getAllBlogPosts().slice(0, 5));
 
@@ -93,7 +94,7 @@ export default component$(() => {
           <ul class="space-y-6">
             {posts.value.map((post) => (
               <li key={post.slug}>
-                <a href={`/blog/${post.slug}`} class="group block">
+                <a href={`/blog/${post.slug}/`} class="group block">
                   <span class="text-xl font-medium underline-offset-4 group-hover:underline">
                     {post.title}
                   </span>
@@ -113,61 +114,63 @@ export default component$(() => {
   );
 });
 
+const title = 'Maciej Szczęsny, Senior Frontend Developer';
+const description =
+  'Maciej Szczęsny, senior frontend developer in Warsaw. Frontend, some backend, and a lot of work with AI agents.';
+
 export const head: DocumentHead = {
-  title: 'Maciej Szczęsny, Senior Frontend Developer',
+  title,
   meta: [
-    {
-      name: 'description',
-      content:
-        'Maciej Szczęsny, senior frontend developer in Warsaw. Frontend, some backend, and a lot of work with AI agents.',
-    },
-    {
-      name: 'keywords',
-      content: 'Maciej Szczęsny, Senior Frontend Developer, Web Development, AI agents, Warsaw',
-    },
-    {
-      name: 'author',
-      content: 'Maciej Szczęsny',
-    },
-    {
-      name: 'robots',
-      content: 'index, follow',
-    },
-    {
-      property: 'og:title',
-      content: 'Maciej Szczęsny, Senior Frontend Developer',
-    },
-    {
-      property: 'og:description',
-      content:
-        'Maciej Szczęsny, senior frontend developer in Warsaw. Frontend, some backend, and a lot of work with AI agents.',
-    },
-    {
-      property: 'og:type',
-      content: 'website',
-    },
-    {
-      property: 'og:url',
-      content: 'https://macez.dev',
-    },
-    {
-      name: 'twitter:card',
-      content: 'summary_large_image',
-    },
-    {
-      name: 'twitter:title',
-      content: 'Maciej Szczęsny, Senior Frontend Developer',
-    },
-    {
-      name: 'twitter:description',
-      content:
-        'Maciej Szczęsny, senior frontend developer in Warsaw. Frontend, some backend, and a lot of work with AI agents.',
-    },
+    { name: 'description', content: description },
+    { name: 'author', content: SITE_NAME },
+    { property: 'og:title', content: title },
+    { property: 'og:description', content: description },
+    { property: 'og:type', content: 'profile' },
+    { property: 'og:url', content: `${SITE_URL}/` },
+    { property: 'og:site_name', content: SITE_NAME },
+    { property: 'og:image', content: DEFAULT_OG_IMAGE },
+    { property: 'og:image:width', content: '1200' },
+    { property: 'og:image:height', content: '630' },
+    { property: 'og:image:alt', content: "I'm Maciej. I write software, mostly for the web." },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: title },
+    { name: 'twitter:description', content: description },
+    { name: 'twitter:image', content: DEFAULT_OG_IMAGE },
   ],
-  links: [
-    {
-      rel: 'canonical',
-      href: 'https://macez.dev',
-    },
+  scripts: [
+    jsonLd({
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'WebSite',
+          '@id': `${SITE_URL}/#website`,
+          url: `${SITE_URL}/`,
+          name: SITE_NAME,
+          inLanguage: 'en',
+          publisher: { '@id': `${SITE_URL}/#person` },
+        },
+        {
+          '@type': 'ProfilePage',
+          '@id': `${SITE_URL}/#profile`,
+          url: `${SITE_URL}/`,
+          name: title,
+          isPartOf: { '@id': `${SITE_URL}/#website` },
+          mainEntity: { '@id': `${SITE_URL}/#person` },
+        },
+        {
+          '@type': 'Person',
+          '@id': `${SITE_URL}/#person`,
+          name: SITE_NAME,
+          url: `${SITE_URL}/`,
+          jobTitle: 'Senior Frontend Developer',
+          knowsAbout: ['Frontend development', 'Backend development', 'AI agents'],
+          address: { '@type': 'PostalAddress', addressLocality: 'Warsaw', addressCountry: 'PL' },
+          sameAs: [
+            'https://github.com/maciejSzcz',
+            'https://www.linkedin.com/in/maciej-szcz%C4%99sny-a14b55134/',
+          ],
+        },
+      ],
+    }),
   ],
 };
