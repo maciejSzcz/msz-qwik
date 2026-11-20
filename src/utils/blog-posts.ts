@@ -7,6 +7,12 @@ export interface BlogPost {
   date: string;
 }
 
+// A post without a date would get a made-up one that changes every build; fail instead.
+function requireDate(date: string | undefined, path: string): string {
+  if (!date) throw new Error(`Blog post is missing a date in its frontmatter: ${path}`);
+  return date;
+}
+
 let cachedPosts: BlogPost[] | null = null;
 
 function loadBlogPosts(): BlogPost[] {
@@ -29,7 +35,7 @@ function loadBlogPosts(): BlogPost[] {
       slug,
       title: frontmatter.title || module.title || 'Untitled',
       description: frontmatter.description || module.description || '',
-      date: frontmatter.date || module.date || new Date().toISOString(),
+      date: requireDate(frontmatter.date || module.date, path),
     });
   }
 

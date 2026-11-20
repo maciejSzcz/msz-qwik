@@ -13,7 +13,8 @@ export const RouterHead = component$(() => {
     <>
       <title>{head.title}</title>
 
-      <link rel="canonical" href={loc.url.href} />
+      {/* 404.html is served at many URLs, so it has no single canonical address */}
+      {!loc.url.pathname.endsWith('/404.html') && <link rel="canonical" href={loc.url.href} />}
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 

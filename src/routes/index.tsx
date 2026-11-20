@@ -6,7 +6,7 @@ import { DEFAULT_OG_IMAGE, jsonLd, SITE_NAME, SITE_URL } from '~/utils/site';
 export const useRecentPosts = routeLoader$(() => getAllBlogPosts().slice(0, 5));
 
 // "I write" stays together so "I" never ends a line on its own
-const headline = ["I'm", 'Maciej.', 'I\u00A0write', 'software,', 'mostly', 'for', 'the', 'web.'];
+const headline = ["I’m", 'Maciej.', 'I\u00A0write', 'software,', 'mostly', 'for', 'the', 'web.'];
 
 // index of each word's first letter, so letters stagger across the whole headline
 const letterIndex = headline.map((_, i) =>
@@ -40,7 +40,7 @@ export default component$(() => {
         class="display max-w-[15ch] pt-28 text-[clamp(3rem,8.5vw,7.5rem)] text-balance md:pt-44"
       >
         {headline.map((word, wi) => (
-          <span key={word} aria-hidden="true">
+          <span key={wi} aria-hidden="true">
             <span class="rise-word">
               {[...word].map((ch, ci) => (
                 <span key={ci} class="rise-letter" style={{ '--n': letterIndex[wi] + ci }}>
@@ -55,7 +55,7 @@ export default component$(() => {
 
       <div class="col-text intro-fade mt-24 space-y-6 text-xl leading-relaxed md:mt-40">
         <p id="about" class="scroll-mt-12">
-          I work as a software developer in Warsaw. I've been doing it since 2021, mostly frontend,
+          I work as a software developer in Warsaw. I’ve been doing it since 2021, mostly frontend,
           though lately more and more backend too. And I write a lot of my code with AI agents now.
         </p>
         <p class="text-ink-soft">
@@ -66,7 +66,7 @@ export default component$(() => {
           <a href="mailto:mszczesny@macez.dev" class={link}>
             email
           </a>
-          . I'm also on{' '}
+          . I’m also on{' '}
           <a
             href="https://github.com/maciejSzcz"
             target="_blank"
@@ -102,6 +102,7 @@ export default component$(() => {
                     {new Date(post.date).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'short',
+                      timeZone: 'UTC',
                     })}
                   </time>
                 </a>
@@ -131,7 +132,7 @@ export const head: DocumentHead = {
     { property: 'og:image', content: DEFAULT_OG_IMAGE },
     { property: 'og:image:width', content: '1200' },
     { property: 'og:image:height', content: '630' },
-    { property: 'og:image:alt', content: "I'm Maciej. I write software, mostly for the web." },
+    { property: 'og:image:alt', content: "I’m Maciej. I write software, mostly for the web." },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },

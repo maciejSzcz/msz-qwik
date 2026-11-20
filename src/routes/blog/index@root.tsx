@@ -1,29 +1,10 @@
 import { component$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 import { routeLoader$ } from '@builder.io/qwik-city';
-import { MDXModule } from '~/model/MDXModule';
-
-import type { BlogPost } from '~/utils/blog-posts';
+import { getAllBlogPosts } from '~/utils/blog-posts';
 import { DEFAULT_OG_IMAGE, jsonLd, SITE_NAME, SITE_URL } from '~/utils/site';
 
-export const useBlogPosts = routeLoader$(async () => {
-  const posts: BlogPost[] = [];
-
-  const blogModules = import.meta.glob<MDXModule>('/src/routes/blog/*/index.mdx', { eager: true });
-  for (const [path, module] of Object.entries(blogModules)) {
-    const slug = path.split('/')[4];
-    const frontmatter = module.frontmatter || module;
-
-    posts.push({
-      slug,
-      title: frontmatter.title || module.title || 'Untitled',
-      description: frontmatter.description || module.description || '',
-      date: frontmatter.date || module.date || new Date().toISOString(),
-    });
-  }
-
-  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-});
+export const useBlogPosts = routeLoader$(() => getAllBlogPosts());
 
 export default component$(() => {
   const posts = useBlogPosts();
@@ -41,6 +22,7 @@ export default component$(() => {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
+                  timeZone: 'UTC',
                 })}
               </time>
               <h2 class="font-display mt-2 text-3xl font-extrabold tracking-tight text-balance underline-offset-4 group-hover:underline">

@@ -17,6 +17,7 @@
   html {
     background-color: var(--color-paper);
     color: var(--color-ink);
+    color-scheme: light;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -24,6 +25,12 @@
   body {
     font-family: var(--font-sans);
     line-height: 1.6;
+  }
+
+  /* no double-tap zoom delay on controls; pages keep double-tap zoom */
+  a,
+  button {
+    touch-action: manipulation;
   }
 
   ::selection {

@@ -15,6 +15,8 @@ export default component$(() => {
     <QwikCityProvider>
       <head>
         <meta charset="utf-8" />
+        {/* matches --color-paper in global.css */}
+        <meta name="theme-color" content="#faf9f6" />
         <link rel="preload" href={funnelDisplayUrl} as="font" type="font/woff2" crossOrigin="" />
         <link rel="preload" href={funnelSansUrl} as="font" type="font/woff2" crossOrigin="" />
         {/* Skip the home intro if it already played this session. Runs before first paint. */}

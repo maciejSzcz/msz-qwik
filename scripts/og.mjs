@@ -97,7 +97,7 @@ await render(
   card({
     left: 'MACIEJ SZCZĘSNY',
     right: 'MACEZ.DEV',
-    title: "I'm Maciej. I write software, mostly for the web.",
+    title: "I’m Maciej. I write software, mostly for the web.",
   })
 );
 
